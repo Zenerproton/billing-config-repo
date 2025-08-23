@@ -10,3 +10,10 @@ eureka:
 jwt:
   secret: "2d093646bf7bd290e9b1a5f632f4f01a546765d76c9e8a01156b927e4976c8e7"
   expiration: 86400000 # 24 hours in milliseconds
+
+# OpenAPI (Swagger) Documentation Configuration
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
