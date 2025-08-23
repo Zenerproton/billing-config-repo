@@ -1,0 +1,12 @@
+# Eureka Client Configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ # Address of your Eureka Server
+  instance:
+    prefer-ip-address: true
+
+# Custom properties for JWT configuration
+jwt:
+  secret: "2d093646bf7bd290e9b1a5f632f4f01a546765d76c9e8a01156b927e4976c8e7"
+  expiration: 86400000 # 24 hours in milliseconds
