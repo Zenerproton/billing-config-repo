@@ -1,27 +1,26 @@
 server:
-  port: 8083
+  port: 8085
 
 spring:
   application:
-    name: invoice-service
-  datasource:
-    url: jdbc:postgresql://localhost:5432/billing_software_db
-    username: postgres
-    password: root
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    show-sql: true
-
+    name: notification-service
 
   kafka:
-    producer:
+    consumer:
       bootstrap-servers: localhost:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      # FIX: Use JsonSerializer to handle Java objects
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      group-id: notification-group
+      auto-offset-reset: earliest
+
+      # Use ErrorHandlingDeserializer to avoid hard failures
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+
+      properties:
+        # Delegate actual JSON deserialization
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+
+        # Trust event packages (both services if needed)
+        spring.json.trusted.packages: com.billing.invoiceservice.event,com.billing.notificationservice.event
+
+        # Optional: force deserializer if type header mismatch happens
+        spring.json.value.default.type: com.billing.invoiceservice.event.InvoiceCreatedEvent
