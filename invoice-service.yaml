@@ -25,4 +25,7 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       # FIX: Use JsonSerializer to handle Java objects
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        # This tells the serializer not to add the problematic type header
+        spring.json.add.type.headers: false
 
