@@ -1,3 +1,5 @@
+server:
+  port: 8085
 spring:
   kafka:
     consumer:
@@ -10,5 +12,3 @@ spring:
       properties:
         # This key MUST be indented under 'properties'
         spring.json.trust.packages: "*"
-server:
-  port:8085
