@@ -35,5 +35,5 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trust.packages: "*"
-        spring.json.value.default.type=com/billing/invoiceservice/event/PaymentSuccessfulEvent
+        spring.json.value.default.type: com/billing/invoiceservice/event/PaymentSuccessfulEvent
         
