@@ -4,11 +4,13 @@ server:
 spring:
   application:
     name: invoice-service
+
   datasource:
     url: jdbc:postgresql://localhost:5432/billing_software_db
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,14 +20,18 @@ spring:
         format_sql: true
     show-sql: true
 
-
   kafka:
     producer:
       bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      # FIX: Use JsonSerializer to handle Java objects
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
-        # This tells the serializer not to add the problematic type header
         spring.json.add.type.headers: false
 
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: invoice-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.add.type.headers: false
