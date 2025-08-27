@@ -37,3 +37,28 @@ spring:
         spring.json.trust.packages: "*"
         spring.json.value.default.type: com.billing.invoiceservice.event.PaymentSuccessfulEvent
         
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      # Configuration for the circuit breaker protecting the product-service call
+      productServiceBreaker:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10 # Last 10 calls
+        failureRateThreshold: 50 # If 50% of calls fail, the circuit opens
+        minimumNumberOfCalls: 5 # At least 5 calls must be made before calculating the failure rate
+        waitDurationInOpenState: 10s # Wait 10 seconds before transitioning from OPEN to HALF_OPEN
+        permittedNumberOfCallsInHalfOpenState: 3 # Allow 3 test calls in HALF_OPEN state
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+
+      # Configuration for the circuit breaker protecting the user-service call
+      userServiceBreaker:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
